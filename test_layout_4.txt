@@ -1,0 +1,119 @@
+0 0 0 XXXX
+127 127 127 White
+127 0 0 Red
+0 127 0 Green
+0 0 127 Blue
+127 127 0 Yellow
+127 0 127 Fuchsia
+0 127 127 Aqua
+64 0 0 Maroon
+0 64 0 DarkGreen
+0 0 64 DarkBlue
+64 64 0 Olive
+64 0 64 Purple
+0 64 64 Teal
+32 32 32 Gray
+64 64 64 Silver
+95 0 0 DarkRed
+0 95 0 ForestGreen
+0 0 95 Navy
+95 95 0 DarkOlive
+95 0 95 DarkMagenta
+0 95 95 DarkCyan
+47 0 0 Brown
+0 47 0 MediumGreen
+0 0 47 MediumBlue
+47 47 0 Khaki
+47 0 47 MediumPurple
+0 47 47 DarkTurquoise
+16 16 16 DimGray
+79 63 47 SaddleBrown
+63 79 47 DarkOliveGreen
+63 47 79 DarkSlateBlue
+79 63 63 IndianRed
+47 79 63 SeaGreen
+47 63 79 MediumSlateBlue
+79 79 47 YellowGreen
+79 63 79 Orchid
+47 79 79 CadetBlue
+32 16 16 RosyBrown
+16 32 16 DarkSeaGreen
+16 16 32 DarkSlateGray
+32 32 16 OliveDrab
+32 16 32 Violet
+16 32 32 LightSeaGreen
+63 31 31 PaleVioletRed
+31 63 31 MediumSeaGreen
+31 31 63 SlateBlue
+63 63 31 LightGoldenrod
+63 31 63 MediumOrchid
+31 63 63 MediumAquamarine
+95 47 47 Salmon
+47 95 47 LimeGreen
+47 47 95 RoyalBlue
+95 95 47 DarkKhaki
+95 47 95 HotPink
+47 95 95 MediumTurquoise
+
+
+s01 White XXXX 20 [11]
+s02 Red XXXX 21 [12]
+s03 Green XXXX 22 [13]
+s04 Blue XXXX 23 [14]
+s05 Yellow XXXX 24 [15]
+s06 Fuchsia XXXX 25 [16]
+s07 Aqua XXXX 26 [17]
+s08 Maroon XXXX 27 [18]
+s09 DarkGreen XXXX 28 [21]
+s10 DarkBlue XXXX 29 [22]
+s11 Olive XXXX 30 [23]
+s12 Purple XXXX 31 [24]
+s13 Teal XXXX 32 [25]
+s14 Gray XXXX 33 [26]
+s15 Silver XXXX 34 [27]
+s16 DarkRed XXXX 35 [28]
+s17 ForestGreen XXXX 36 [31]
+s18 Navy XXXX 37 [32]
+s19 DarkOlive XXXX 38 [33]
+s20 DarkMagenta XXXX 39 [34]
+s21 DarkCyan XXXX 40 [35]
+s22 Brown XXXX 41 [36]
+s23 MediumGreen XXXX 42 [37]
+s24 MediumBlue XXXX 43 [38]
+s25 Khaki XXXX 44 [41]
+s26 MediumPurple XXXX 45 [42]
+s27 DarkTurquoise XXXX 46 [43]
+s28 DimGray XXXX 47 [44]
+s29 SaddleBrown XXXX 48 [45]
+s30 DarkOliveGreen XXXX 49 [46]
+s31 DarkSlateBlue XXXX 50 [47]
+s32 IndianRed XXXX 51 [48]
+s33 SeaGreen XXXX 52 [51]
+s34 MediumSlateBlue XXXX 53 [52]
+s35 YellowGreen XXXX 54 [53]
+s36 Orchid XXXX 55 [54]
+s37 CadetBlue XXXX 56 [55]
+s38 RosyBrown XXXX 57 [56]
+s39 DarkSeaGreen XXXX 58 [57]
+s40 DarkSlateGray XXXX 59 [58]
+s41 OliveDrab XXXX 60 [61]
+s42 Violet XXXX 61 [62]
+s43 LightSeaGreen XXXX 62 [63]
+s44 PaleVioletRed XXXX 63 [64]
+s45 MediumSeaGreen XXXX 64 [65]
+s46 SlateBlue XXXX 65 [66]
+s47 LightGoldenrod XXXX 66 [67]
+s48 MediumOrchid XXXX 67 [68]
+s49 MediumAquamarine XXXX 68 [71]
+s50 Salmon XXXX 69 [72]
+s51 LimeGreen XXXX 70 [73]
+s52 RoyalBlue XXXX 71 [74]
+s53 DarkKhaki XXXX 72 [75]
+s54 HotPink XXXX 73 [76]
+s55 MediumTurquoise XXXX 74 [77]
+s56 Fuchsia XXXX 75 [78]
+# s57 Lime XXXX 76 [81]
+s58 Teal XXXX 77 [82]
+s59 Olive XXXX 78 [83]
+s60 Purple XXXX 79 [84]
+default XXXX XXXX 84 []
