@@ -1,0 +1,4 @@
+[submodule "example/sampler"]
+	path = example/sampler
+	url = git@github.com:worikgh/midi_sample.git
+	branch = mistress

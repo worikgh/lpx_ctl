@@ -1,6 +1,8 @@
 # Patterns on LPX Novation
 
-Group and light up LEDs on LPX Novation, and output MIDI signals - all pads in a group/have same colour, output same MIDI note.
+Use a Novation LPX controller to control MIDI devices.
+
+Control the pad colours (normal colour and colour when the pad is pressed), individually or in groups.
 
 ## Sections - Colour and Note
 
