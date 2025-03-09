@@ -15,12 +15,7 @@ pub struct Section {
 impl Section {
     /// FIXME: This must validate and return an error for invalid values
     #[allow(unused)]
-    pub fn new(
-        pads: Vec<u8>,
-        main_colour: [u8; 3],
-        active_colour: [u8; 3],
-        midi_note: u8,
-    ) -> Self {
+    pub fn new(pads: Vec<u8>, main_colour: [u8; 3], active_colour: [u8; 3], midi_note: u8) -> Self {
         // -> Result<Self, LpxCtlError>
         let result = Self {
             pads,
@@ -60,19 +55,19 @@ impl Section {
     }
 
     // Check a set of `Section` to see if they are valid as a grouop
-    pub fn check_sections(sections: &Vec<Section>) -> bool {
+    pub fn check_sections(sections: &[Section]) -> bool {
         // Can only be one section with no pads.  It is the default section
         let default_section_count = sections
             .iter()
-            .filter(|x| x.pads.len() == 0)
+            .filter(|x| x.pads.is_empty())
             .collect::<Vec<&Section>>()
             .len();
-	let a = if default_section_count < 2 {
-	    true
-	}else{
-	    eprintln!("Too many ({default_section_count}) default sections");
-	    return false
-	};
+        let a = if default_section_count < 2 {
+            true
+        } else {
+            eprintln!("Too many ({default_section_count}) default sections");
+            return false;
+        };
         // No intersections
         let b = true;
         for i in 0..(sections.len() - 1) {
@@ -88,22 +83,22 @@ impl Section {
         }
         // There is a default section (with no pads) or every pad is
         // in a section, exactly once
-	let c = default_section_count == 1 || {
-	    let mut hs:HashSet<u8> = HashSet::new();
-	    let mut v:Vec<u8> = Vec::new();
-	    for s in sections.iter() {
-		for p in s.pads.iter() {
-		    hs.insert(*p);
-		    v.push(*p);
-		}
-	    }
-	    if hs.len() == v.len() && v.len() == 64 {
-		true
-	    }else{
-		eprintln!("There are some pads in more than one section");
-		false
-	    }
-	};
+        let c = default_section_count == 1 || {
+            let mut hs: HashSet<u8> = HashSet::new();
+            let mut v: Vec<u8> = Vec::new();
+            for s in sections.iter() {
+                for p in s.pads.iter() {
+                    hs.insert(*p);
+                    v.push(*p);
+                }
+            }
+            if hs.len() == v.len() && v.len() == 64 {
+                true
+            } else {
+                eprintln!("There are some pads in more than one section");
+                false
+            }
+        };
         a && b && c
     }
 
@@ -116,30 +111,29 @@ impl Section {
                 }
             }
         }
-        return false;
+        false
     }
 
-    pub fn parse_json(input: &str) -> Option<Vec<Section>>{
-	//eprintln!("Parse:{input}");
-        let result: Vec<Section> = match 
-	    serde_json::from_str(input){
-		Ok(r) => r,
-		Err(err) => panic!("{err}"),
-	    };
+    pub fn parse_json(input: &str) -> Option<Vec<Section>> {
+        //eprintln!("Parse:{input}");
+        let result: Vec<Section> = match serde_json::from_str(input) {
+            Ok(r) => r,
+            Err(err) => panic!("{err}"),
+        };
         match Self::check_sections(&result) {
             true => Some(result),
             false => {
-		panic!("Sections check failed")
-	    },
+                panic!("Sections check failed")
+            }
         }
     }
-    pub fn row_col_to_pad(row: u8, col: u8) -> u8{
+    pub fn _row_col_to_pad(row: u8, col: u8) -> u8 {
         row * 10 + col
     }
-    pub fn pad_to_row(pad: u8) -> u8 {
+    pub fn _pad_to_row(pad: u8) -> u8 {
         pad / 10
     }
-    pub fn pad_to_col(pad: u8) -> u8 {
+    pub fn _pad_to_col(pad: u8) -> u8 {
         pad % 10
     }
     /// Detect if a pad on the LPX is in this section
