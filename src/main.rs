@@ -198,7 +198,9 @@ fn main() -> Result<(), Box<dyn Error>> {
                 // Send out the note
                 let velocity = message[2];
                 let message: [u8; 3] = [message[0], section.midi_note, velocity];
-                midi_note_out_port.send(&message)?;
+
+		eprintln!("DBG lpx_ctl MIDI Note out: {message:?}");
+		midi_note_out_port.send(&message)?;
 
                 if velocity > 0 {
                     // Note on
