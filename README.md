@@ -34,4 +34,18 @@ following properties:
 * active_colour: [Number, Number, Number] ([usize;3]) RGB colour.
   Each in range 0-127
 * midi_note: The note to attach note-on and note-off MIDI events to.
-  
+
+## Build
+
+* Install Debian `bookworm` on a Raspberry Pi
+* Install Rust
+  * `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+* Clone this repository and its sub-module
+  * `git clone https://gitub.com/worik_gh/lpx_ctl --recursive`
+* Install Jackd2 and ALSA library develpment files
+  * `sudo apt install libasound2-dev libjack-jackd2-dev -y`
+	* Alsa is needed for `lpx_ctl` MIDI communication
+	* Jackd is needed to run the example
+* Build `lpx_ctl`
+  * `cargo build --release`
+* The example programmes use [this MIDI sampler](https://github.com/worikgh/midi_sample.git). This is a sub-module in `lpx_ctl/example/sampler`.  So to use examples:
