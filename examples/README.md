@@ -9,4 +9,4 @@ Example setups for `lpx_ctl`
 
 ## `sampler`
 
-A link to a MIDI sample player  than can act as a target for the LPX
+A link to a MIDI sample player  than can act as a target for the LPX [from here](https://github.com/worikgh/midi_sample)
