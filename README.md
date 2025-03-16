@@ -49,3 +49,30 @@ following properties:
 * Build `lpx_ctl`
   * `cargo build --release`
 * The example programmes use [this MIDI sampler](https://github.com/worikgh/midi_sample.git). This is a sub-module in `lpx_ctl/example/sampler`.  So to use examples:
+
+
+## Examples
+
+### Drum Pad
+
+This example sets up the LPX to act as ten drum pads.
+
+It untilises two configuration files:
+
+* `examples/drum_layout.json` configures `lpx_ctl` and defines the ten drum pads on the LPX, their main and active colours  and the MIDI notes they emit
+* `examples/drum_samples.json` configires `midi_sample` and associates MIDI notes with drum samples
+
+Ensure [jackd](StartingJack.md) is running
+
+In two terminals:
+
+Change directory ot the `examples/` directory.  The drum samples are defined as patshs relative to the `examples/` directory, so it must be the working directory
+
+In one terminal start `lpx_ctl`
+* `../target/release/lpx_ctl ./drum_layout.json`
+
+In the other terminal run the sample player
+* `sampler/target/release/midi_sample drum_samples.json`
+
+
+

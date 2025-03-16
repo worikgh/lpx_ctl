@@ -1,0 +1,44 @@
+{
+  "samples_descr": [
+    {
+      "path": "drumkits/GMRockKit/Kick-Softest.wav",
+      "note": 1
+    },
+    {
+      "path": "drumkits/GMRockKit/Kick-Hardest.wav",
+      "note": 2
+    },
+    {
+      "path": "drumkits/GMRockKit/TomFloor-Hard.wav",
+      "note": 3
+    },
+    {
+      "path": "drumkits/GMRockKit/TomFloor-Hardest.wav",
+      "note": 4
+    },
+    {
+      "path": "drumkits/GMRockKit/TomFloor-Softest.wav",
+      "note": 5
+    },
+    {
+      "path": "drumkits/GMRockKit/Tom2-Hardest.wav",
+      "note": 6
+    },
+    {
+      "path": "drumkits/GMRockKit/Crash-Hard.wav",
+      "note": 7
+    },
+    {
+      "path": "drumkits/GMRockKit/Crash-Hardest.wav",
+      "note": 8
+    },
+    {
+      "path": "drumkits/GMRockKit/Crash-Softest.wav",
+      "note": 9
+    },
+    {
+      "path": "drumkits/GMRockKit/Crash-Soft.wav",
+      "note": 10
+    }
+  ]
+}
