@@ -8,7 +8,6 @@
 //! ["Programmer's Manual" ](https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20X%20-%20Programmers%20Reference%20Manual.pdf)
 extern crate midir;
 extern crate serde;
-// mod lpx_ctl_error;
 mod section;
 
 use crate::midir::os::unix::VirtualOutput;
@@ -25,17 +24,21 @@ use std::sync::mpsc::{self, Receiver, Sender};
 fn load_sections(filename: &str) -> Option<Vec<Section>> {
     let mut file = match File::open(filename) {
         Ok(f) => f,
-        Err(err) => panic!("{err}"),
+        Err(err) => panic!("load_sections: filename: {filename:?}  Error: {err}"),
     };
     let mut content = String::new();
     match file.read_to_string(&mut content) {
         Ok(_) => (),
-        Err(err) => panic!("{err}"),
+        Err(err) => {
+            panic!("load_sections: Failed read_to_string: filename: {filename:?}  Error: {err}")
+        }
     };
 
     // Create the sections from the file
-    let mut sections: Vec<Section> = Section::parse_json(&content).expect("Failed parsing JSON");
-    // If there is a default section with no pads put all unincluded pads in it
+    let mut sections: Vec<Section> =
+        Section::parse_json(&content).expect("Failed parsing JSON for sections");
+
+    // If there is a default section with no pads put all non-included pads in it
     if let Some(index) = sections.iter().position(|x| x.pads.is_empty()) {
         // Collect all pads mentioned so far
         let mut pads_here: Vec<u8> = sections.iter().flat_map(|x| x.pads.clone()).collect();
@@ -44,10 +47,10 @@ fn load_sections(filename: &str) -> Option<Vec<Section>> {
             pads_here.sort();
             // Check each row for missing pads and add them to default
             for r in 1..=8 {
-                let pads: Vec<&u8> = pads_here.iter().filter(|x| *x / 10 == r).collect();
+                let pads_row: Vec<&u8> = pads_here.iter().filter(|x| *x / 10 == r).collect();
                 for c in 1..=8 {
                     let pad = r * 10 + c;
-                    if !pads.iter().any(|x| x == &&pad) {
+                    if !pads_row.iter().any(|&x| x == &pad) {
                         sections[index].pads.push(pad);
                     }
                 }
@@ -57,7 +60,7 @@ fn load_sections(filename: &str) -> Option<Vec<Section>> {
     Some(sections)
 }
 
-// Get a MIDI port that has a name containing `keyword`
+/// Get a MIDI port that has a name containing `keyword`
 fn get_midi_port<T: midir::MidiIO>(midi_io: &T, keyword: &str) -> Option<T::Port> {
     for port in midi_io.ports() {
         let name = match midi_io.port_name(&port) {
@@ -78,7 +81,8 @@ fn get_midi_port<T: midir::MidiIO>(midi_io: &T, keyword: &str) -> Option<T::Port
 /// It uses the passed parameter `name` to create a prort: LpxCtl:<name>
 fn get_midi_out(name: &str) -> Result<MidiOutputConnection, Box<dyn Error>> {
     let midi_output = MidiOutput::new("LpxCtl")?;
-    let port = get_midi_port(&midi_output, "Launchpad X LPX MIDI In").unwrap(); //.ok_or(Err("Failed guess port".into())?);
+    let port =
+        get_midi_port(&midi_output, "Launchpad X LPX MIDI In").ok_or("Failed to find MIDI port")?;
     Ok(midi_output.connect(&port, name)?)
 }
 
@@ -93,13 +97,13 @@ fn get_midi_in(
     tx: Sender<[u8; 3]>,
 ) -> Result<MidiInputConnection<Sender<[u8; 3]>>, Box<dyn Error>> {
     let midi_input = MidiInput::new("LpxCtl")?;
-    let port = get_midi_port(&midi_input, "Launchpad X LPX MIDI In").unwrap();
-    //.ok_or(Err("Failed guess port".into())?);
+    let port =
+        get_midi_port(&midi_input, "Launchpad X LPX MIDI In").ok_or("Failed to find MIDI port")?;
     let result = midi_input.connect(&port, name, f, tx)?;
     Ok(result)
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn inner_main() -> Result<(), Box<dyn Error>> {
     // The only argument is a configuration file
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
@@ -115,15 +119,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     let (tx, rx): (Sender<[u8; 3]>, Receiver<[u8; 3]>) = mpsc::channel::<[u8; 3]>();
 
     // Connect to the LPX to receive pad press events.  `f` is the
-    // function that handles input MIDI and sends them back to themain
-    // thread
+    // function that handles input MIDI and sends them back to the
+    // main thread
     let f = move |_stamp, message: &[u8], tx: &mut Sender<[u8; 3]>| {
-        // let message = MidiMessage::from_bytes(message.to_vec());
         if message.len() == 3 {
             let m3: [u8; 3] = message.try_into().unwrap();
             tx.send(m3).unwrap();
         }
     };
+
     // The port stays open as long as `_in` is in scope
     let _in = get_midi_in("read_input", f, tx.clone())?;
 
@@ -145,6 +149,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         // "LED lighting SysEx message" programmer's mabual page 15
         let mut colour_message: Vec<u8> = vec![240, 0, 32, 41, 2, 12, 3];
+
         let pads: Vec<u8> = section.pads().to_vec();
         for pad in pads.iter() {
             colour_message.push(3); // RGB colour
@@ -152,6 +157,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             colour_message.extend(colour.to_vec()); // RGB tripple
         }
         colour_message.push(247); // End message
+
         colour_message
     };
 
@@ -167,7 +173,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Establish the output that sends MIDI to whatever software will
     // interpret the MIDI to create sound and MIDI controls to
     // whatever interprets them.  An external programme will have to
-    // conmplete these setups as this programme does not know what
+    // complete these setups as this programme does not know what
     // they will be
     let midi_out: MidiOutput = MidiOutput::new("LpxCtlNote")?;
     let port_name = "port";
@@ -183,11 +189,16 @@ fn main() -> Result<(), Box<dyn Error>> {
     loop {
         let message: [u8; 3] = match rx.recv() {
             Ok(m) => m,
-            Err(err) => panic!("{}", err),
+            Err(err) => return Err(Box::new(err)),
         };
         if message[0] == 144 {
+            // FIXME: This assumes channel 1!!!
             // All MIDI notes from LPX start with 144, for initial
-            // noteon and noteoff
+            // noteon and noteoff.  FIXME: Whilst the LPX uses
+            // velocity == 0 to indicate noteoff, there is also the
+            // possibility of a 0x8... MIDI that is a noteoff
+
+            // TODO: Give thought to how to handle MIDI other than noteon/noteoff
 
             // Find the section the pad is in
             let pad: u8 = message[1];
@@ -199,8 +210,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let velocity = message[2];
                 let message: [u8; 3] = [message[0], section.midi_note, velocity];
 
-		eprintln!("DBG lpx_ctl MIDI Note out: {message:?}");
-		midi_note_out_port.send(&message)?;
+                eprintln!("DBG lpx_ctl MIDI Note out: {message:?}");
+                midi_note_out_port.send(&message)?;
 
                 if velocity > 0 {
                     // Note on
@@ -215,11 +226,18 @@ fn main() -> Result<(), Box<dyn Error>> {
                 }
                 continue;
             }
-        } else if message[0] == 176 {
+        } else if message[0] == 0xb0 {
+            // FIXME! Assuming channel 1 again
             // A control signal
             eprintln!("control_port On: Message{message:?}");
             midi_ctl_out_port.send(&message).unwrap();
         }
     }
     // Ok(())
+}
+
+fn main() {
+    if let Err(err) = inner_main() {
+        eprintln!("lpx_ctl: Failed with error: {err}");
+    }
 }

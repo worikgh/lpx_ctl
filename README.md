@@ -1,8 +1,10 @@
 # Patterns on LPX Novation
 
-Use a Novation LPX controller to control MIDI devices.
+Use a Novation LPX controller as a MIDI instrument.
 
-Control the pad colours (normal colour and colour when the pad is pressed), individually or in groups.
+Define and control the pad colours and issue MIDI Note messages
+
+**TODO** The code is assuming channel 1 and that NOTEOFF is a NOTEON with velocity 0
 
 ## Sections - Colour and Note
 
@@ -13,7 +15,7 @@ Control the pad colours (normal colour and colour when the pad is pressed), indi
 
 ### Properties of a Section
 
-* Main Colour: Each section has a main colour that is displayed when the pad is not pressed. 
+* Main Colour: Each section has a main colour that is displayed when the pad is not pressed.
 * Active Colour: Each section has an "active" colour.  When any pad in the section is pressed (has issued an "on" but not an "off" MIDI signal) the section  is the active colour.
 * MIDI Note - the note to output
 
@@ -73,6 +75,3 @@ In one terminal start `lpx_ctl`
 
 In the other terminal run the sample player
 * `sampler/target/release/midi_sample drum_samples.json`
-
-
-

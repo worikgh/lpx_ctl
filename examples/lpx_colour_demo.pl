@@ -4,7 +4,9 @@ use strict;
 # Create a layout file for `lpx_ctl`that demonstrates lots of colours
 # and basic MIDI output
 
-# Put the output of this through `makd_cfg`
+# This outputs (on STDOUT) a text data that can be used by `make_cfg`
+# to create a JSON file to configure `lpx_ctl`
+
 my @col = qw |127   0   0  red
   0 127   0  Lime
   0   0 127  Royal_Blue

@@ -1,9 +1,8 @@
-use std::collections::HashSet;
-// use crate::lpx_ctl_error::LpxCtlError;
-use serde::{Deserialize, Serialize};
 /// A `Section` is a collection of pads on a LPX that is grouped".
 /// All the pads in it are one colour and emit the same note
-#[allow(unused)]
+use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Section {
     pub pads: Vec<u8>, // 11-88
@@ -13,7 +12,8 @@ pub struct Section {
 }
 
 impl Section {
-    /// FIXME: This must validate and return an error for invalid values
+    /// FIXME: This must validate and return an error for invalid
+    /// values. (Unused as `Section` objects created by parsing JSON
     #[allow(unused)]
     pub fn new(pads: Vec<u8>, main_colour: [u8; 3], active_colour: [u8; 3], midi_note: u8) -> Self {
         // -> Result<Self, LpxCtlError>
@@ -49,12 +49,12 @@ impl Section {
         }) && self.pads.len() <= 64
     }
 
-    // Check that a `pad` is valid
+    /// Check that a `pad` is valid
     fn valid_pad(pad: u8) -> bool {
         (11..=88).contains(&pad) && pad % 10 != 0 && pad % 10 != 9
     }
 
-    // Check a set of `Section` to see if they are valid as a grouop
+    /// Check a set of `Section` to see if they are valid as a group
     pub fn check_sections(sections: &[Section]) -> bool {
         // Can only be one section with no pads.  It is the default section
         let default_section_count = sections
@@ -68,6 +68,7 @@ impl Section {
             eprintln!("Too many ({default_section_count}) default sections");
             return false;
         };
+
         // No intersections
         let b = true;
         for i in 0..(sections.len() - 1) {
@@ -81,6 +82,7 @@ impl Section {
                 }
             }
         }
+
         // There is a default section (with no pads) or every pad is
         // in a section, exactly once
         let c = default_section_count == 1 || {
@@ -102,7 +104,6 @@ impl Section {
         a && b && c
     }
 
-    #[allow(dead_code)]
     pub fn intersect(&self, other: &Self) -> bool {
         for i in self.pads.iter() {
             for j in other.pads.iter() {
@@ -127,6 +128,7 @@ impl Section {
             }
         }
     }
+
     pub fn _row_col_to_pad(row: u8, col: u8) -> u8 {
         row * 10 + col
     }
@@ -136,6 +138,7 @@ impl Section {
     pub fn _pad_to_col(pad: u8) -> u8 {
         pad % 10
     }
+
     /// Detect if a pad on the LPX is in this section
     pub fn pad_in(&self, pad: u8) -> bool {
         self.pads.contains(&pad)
@@ -148,7 +151,6 @@ impl Section {
 }
 
 use std::fmt;
-#[allow(unused)]
 impl fmt::Display for Section {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(

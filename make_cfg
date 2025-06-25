@@ -46,6 +46,7 @@ my $ln = 0;
 while(my $line = <$cfg_fh>){
     $ln++;
     chomp $line;
+    # warn "$ln \$line $line\n";
     $line =~ /^\s*$/ and next;
     $line =~ /^\s*\#/ and next;
     if($line =~ /^(\d+)\s+(\d+)\s+(\d+)\s+(\w+)\s*$/){
